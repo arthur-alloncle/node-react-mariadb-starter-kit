@@ -12,7 +12,9 @@
     "scheduler": "^0.27.0",
     "set-cookie-parser": "^2.7.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

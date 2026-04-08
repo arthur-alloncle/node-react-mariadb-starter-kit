@@ -1,24 +1,32 @@
 import { Request, Response } from "express";
 import { generateAccessToken, generateRefreshToken } from "../../utils/jwt";
 import jwt from "jsonwebtoken";
+import { prisma } from "@/config/prisma";
+import bcrypt from "bcrypt";
 
 export const login = async (req: Request, res: Response) => {
-  const user = { id: 1, role: "admin" }; // mock
+  const { email, password } = req.body;
 
-  const accessToken = generateAccessToken(user);
-  const refreshToken = generateRefreshToken(user);
+  const user = await prisma.user.findUnique({ where: { email } });
 
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    secure: false
-  });
+  if (!user) return res.sendStatus(401);
 
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: false
-  });
+  const valid = await bcrypt.compare(password, user.password);
 
-  res.json({ message: "Logged in" });
+  if (!valid) return res.sendStatus(401);
+
+  const payload = {
+    id: user.id,
+    role: user.role
+  };
+
+  const accessToken = generateAccessToken(payload);
+  const refreshToken = generateRefreshToken(payload);
+
+  res.cookie("accessToken", accessToken, { httpOnly: true });
+  res.cookie("refreshToken", refreshToken, { httpOnly: true });
+
+  res.json({ user });
 };
 
 export const refresh = (req: Request, res: Response) => {

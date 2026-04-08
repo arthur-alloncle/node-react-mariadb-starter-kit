@@ -1,18 +1,26 @@
 {
   "name": "backend",
+  "type": "commonjs",
   "scripts": {
-    "dev": "nodemon --watch src --exec ts-node src/server.ts"
+    "dev": "nodemon --watch src --exec ts-node -r tsconfig-paths/register src/server.ts",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio"
   },
   "dependencies": {
+    "@prisma/client": "^7.6.0",
     "bcrypt": "^5",
     "cookie-parser": "^1",
     "cors": "^2",
     "dotenv": "^16",
     "express": "^4",
     "jsonwebtoken": "^9",
-    "mysql2": "^3"
+    "mysql2": "^3",
+    "prisma": "^7.6.0",
+    "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^4",
