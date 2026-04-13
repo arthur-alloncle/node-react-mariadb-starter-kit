@@ -8,13 +8,13 @@ export interface AuthRequest extends Request {
 export const authenticate = (req: AuthRequest, res: Response, next: NextFunction) => {
   const token = req.cookies.accessToken;
 
-  if (!token) return res.sendStatus(403);
+  if (!token) return res.sendStatus(403).json({ message: "⛔️Non authentifié" });
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!);
     req.user = decoded;
     next();
   } catch {
-    return res.sendStatus(403);
+    return res.sendStatus(403).json({ message: "❌Token invalide" });
   }
 };
