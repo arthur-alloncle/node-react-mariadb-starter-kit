@@ -24,19 +24,19 @@ export class Decision extends Model {
   })
   title!: string;
 
-    @Column({
+  @Column({
     type: DataType.NUMBER,
-    allowNull: false,
+    allowNull: true,
   })
   outcome!: string;
 
-    @Column({
+  @Column({
     type: DataType.NUMBER,
     allowNull: false,
   })
   confidence!: string;
 
-    @Column({
+  @Column({
     type: DataType.NUMBER,
     allowNull: false,
   })

@@ -8,7 +8,7 @@ interface IGetUserAuthInfoRequest extends Request {
   user?: {id: string} // or any other type
 }
 
-export const createDecision = async (req: IGetUserAuthInfoRequest, res: Response) => {
+export const create = async (req: IGetUserAuthInfoRequest, res: Response) => {
     
   try {
     const { title, category_id, outcome, importance, confidence } = req.body;
@@ -44,3 +44,13 @@ export const createDecision = async (req: IGetUserAuthInfoRequest, res: Response
     return res.status(500).json({ message: "Erreur serveur" });
   }
 };
+
+export const list = async (req: IGetUserAuthInfoRequest, res: Response) => {
+  const userId = req.user?.id;
+  if(!userId) {
+    return res.status(401).json({message: "Non authentifié"})
+  }
+  const decisions = await Decision.findAll({where: {user_id: userId}})
+
+  return res.json(decisions);
+}
